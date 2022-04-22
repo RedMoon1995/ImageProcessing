@@ -162,7 +162,7 @@ def dcm2png_single(dcm_path):
     save_pa = r'./png/single'
     if not os.path.exists(save_pa):
         os.makedirs(save_pa)
-    img_name = os.path.split(dcm_path.replace('.dcm', '.png'))  # 替换后缀名并分离路径
+    img_name = os.path.split(dcm_path.replace('.dcm', '.jpg'))  # 替换后缀名并分离路径
     img_name = img_name[-1]
     ds = pydicom.read_file(dcm_path, force=True)       # 注意这里，强制读取
     img = ds.pixel_array  # 提取图像信息
@@ -211,4 +211,6 @@ if __name__ == "__main__":
 
 
     #nii2dcm_single("G:\project\data\ct_train\ct_train_1001_image.nii.gz",False)
-    dcm2nii_single("G:\\project\\tool_code\\dcm\\denoise")
+    #dcm2nii_single("G:\\project\\tool_code\\dcm\\denoise")
+    #dcm2png_single("G:\\project\\tool_code\\dcm\\dcm_single\\ct_train_1001_image-173.dcm")
+    dcm2png_single("G:\\project\\data\\CTdata\\E0001001V3\\1.2.392.200036.9116.2.5.1.48.1215508268.1316403078.758536.dcm")
