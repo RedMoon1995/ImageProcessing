@@ -59,28 +59,45 @@ def nii2png(data_path, label_path):
 
 def dcm2nii_single(dcm_path):
     path = dcm_path
-    save_folder = 'G:\\project\\tool_code\\dcm'
-    data = np.zeros((512,512,363))
+    #save_folder = 'G:\\project\\data\\tem\\dcm'
+    save_folder = "G:\\project\\data\\crop_CTdata"
+    data = np.zeros((400,200,200))
+
+    img_sitk = sitk.ReadImage("G:\\project\\data\\CTdata\\E0001270V3\\1.2.392.200036.9116.2.5.1.48.1215508268.1335413119.347938.dcm")
+    img_spacing = img_sitk.GetSpacing()
+    img_origin = img_sitk.GetOrigin()
+    img_direction = img_sitk.GetDirection()
+    print(img_direction,img_origin,img_spacing)
+
     for root, dirs, files in os.walk(path):
         for j in range(0,len(files)-1):
-            ct_path = os.path.join(root, "ct_train_1001_image-%s.dcm"% str(j+1))
-            print(ct_path)
+            #ct_path = os.path.join(root, "ct_test_2001_image-%s.dcm"% str(j+1))
+            ct_path = os.path.join(root,str(j + 100)+".dcm")
+            #print(ct_path)
             ct_image = sitk.ReadImage(ct_path)  # 读取dcm图片
             ct_image_array = sitk.GetArrayFromImage(ct_image)
-            print(ct_image_array.shape)
-            data[:,:,j] = ct_image_array[0,:,:]
+            #print(ct_image_array.shape)
+            #data[j:,:] = np.flip(ct_image_array[0,:,:],axis=0)
+            data[j:, :] = ct_image_array[0, :, :]
 
         print(data.shape)
         data = np.array(data)
         data = sitk.GetImageFromArray(data)
-        sitk.WriteImage(data, save_folder+'\\denoise.nii.gz')
+
+        space = np.array([1.0,1.0,0.5])
+
+        data.SetDirection(img_direction)
+        data.SetSpacing(space)
+        data.SetOrigin(img_origin)
+
+        sitk.WriteImage(data, save_folder+'\\1270_denoise.nii.gz')
         print('Save result to: %s' % save_folder)
 
                 
 
 
 def nii2dcm_single(nii_path, IsData = True):
-    save_folder = './dcm/dcm_single'
+    save_folder = 'G:\\project\\data\\tem\\dcm'
     if not os.path.exists(save_folder):
         os.makedirs(save_folder)
     ori_data = sitk.ReadImage(nii_path)  # 读取一个数据
@@ -107,7 +124,7 @@ def nii2dcm_single(nii_path, IsData = True):
             sitk.WriteImage(data_img, "%s/%s-%d.dcm" % (save_folder, img_name, j+1))
         else:   # 标签
             #slice_i = data1[j, :, :] * 122
-            slice_i = data1[j, :, :]
+            slice_i = np.flip(data1[j, :, :],axis=0)
             label_img = sitk.GetImageFromArray(slice_i)
             # Convert floating type image (imgSmooth) to int type (imgFiltered)
             label_img = castFilter.Execute(label_img)
@@ -158,7 +175,7 @@ def nii2dcm(data_path, lable_path, IsTrain = False):
                 sitk.WriteImage(data_img, "%s/%s-%d.dcm" % (save_img, img_name, i))
 
 
-def dcm2png_single(dcm_path):
+def dcm2png_single(dcm_path): #这个不好用，用dcm2png.py
     save_pa = r'./png/single'
     if not os.path.exists(save_pa):
         os.makedirs(save_pa)
@@ -210,7 +227,8 @@ if __name__ == "__main__":
     # dcm2png(dcm_pa, lab_dcm)
 
 
-    #nii2dcm_single("G:\project\data\ct_train\ct_train_1001_image.nii.gz",False)
-    #dcm2nii_single("G:\\project\\tool_code\\dcm\\denoise")
+    #nii2dcm_single("G:\\project\\data\\MMWHS_test_data\\test_data\\ct_test_2001_image.nii.gz",False)
+    #dcm2nii_single("G:\\project\\data\\tem\\denoise")
+    dcm2nii_single("G:\\project\\data\\crop_CTdata\\1270denoise")
     #dcm2png_single("G:\\project\\tool_code\\dcm\\dcm_single\\ct_train_1001_image-173.dcm")
-    dcm2png_single("G:\\project\\data\\CTdata\\E0001001V3\\1.2.392.200036.9116.2.5.1.48.1215508268.1316403078.758536.dcm")
+    #dcm2png_single("G:\\project\\data\\CTdata\\E0001001V3\\1.2.392.200036.9116.2.5.1.48.1215508268.1316403078.758536.dcm")

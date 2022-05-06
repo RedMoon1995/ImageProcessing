@@ -12,9 +12,11 @@ def crop_dcms(data_dir_name):
     path = os.path.join(ct_root_path, data_dir_name)
     for root, dirs, files in os.walk(path):
         i = 0
+        j = 0
         for item in files:
             i = i + 1
-            if '.dcm' in item.lower() and i<=300 and i>=320:
+            j = j + 1
+            if '.dcm' in item.lower() and i<=499 and i>=100:
                 ct_path = os.path.join(root, item)  # dcm文件完整绝对路径
                 # mask_path = ct_path.replace(ct_root_path, mask_root_path)
 
@@ -28,7 +30,7 @@ def crop_dcms(data_dir_name):
                 print(ct_image_array.shape)
 
                 crop_dir = os.path.join(output_root_path, data_dir_name + "crop")
-                crop_path = os.path.join(output_root_path, data_dir_name + "crop", item)
+                crop_path = os.path.join(output_root_path, data_dir_name + "crop",str(j)+".dcm")
 
                 if not os.path.exists(crop_dir):
                     os.makedirs(crop_dir)
@@ -40,7 +42,7 @@ def crop_dcms(data_dir_name):
                 #     i += 1
 
                 ct_crop_array = []
-                ct_crop_array.append(ct_image_array[0][120:270, 180:330])
+                ct_crop_array.append(ct_image_array[0][150:350, 200:400])
                 #ct_crop_array.append(ct_image_array[0][0:512, 0:512])
                 #ct_crop_array.append(ct_image_array[0][117:272,190:345])
                 #ct_crop_array.append(ct_image_array[0][97:292, 170:365])
@@ -57,7 +59,7 @@ def crop_dcms(data_dir_name):
                 crop_image.SetMetaData("0010|0030", ct_image.GetMetaData("0010|0030"))
                 crop_image.SetMetaData("0010|0040", ct_image.GetMetaData("0010|0040"))
                 crop_image.SetMetaData("0018|0022", ct_image.GetMetaData("0018|0022"))
-                crop_image.SetMetaData("0020|0013", ct_image.GetMetaData("0020|0013"))
+                crop_image.SetMetaData("0020|0013", str(j))
                 #insNum = i - 174
                 #crop_image.SetMetaData("0020|0013", "%d"%insNum) #Instance Number
                 crop_image.SetMetaData("0018|0050", ct_image.GetMetaData("0018|0050")) #Slice Thickness

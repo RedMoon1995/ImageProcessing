@@ -34,9 +34,9 @@ if __name__=='__main__':
 
     # 下面是将对应的dicom格式的图片转成jpg
     #dcm_image_path = 'C:/Data/001/C+ delay/{}'.format(i)  # 读取dicom文件
-    dcm_image_path = "G:\\project\\tool_code\\dcm\\denoise\\ct_train_1001_image-173.dcm"
+    dcm_image_path = "G:\\project\\tool_code\\dcm\\dcm_single\\ct_train_1001_image-210.dcm"
     #output_jpg_path = 'C:/Data/001/C+ delay/{}.jpg'.format(i)
-    output_jpg_path = "G:\\project\\tool_code\\dcm\\denoise\\ct_train_1001_image-173.jpg"
+    output_jpg_path = "G:\\project\\tool_code\\dcm\\dcm_single\\ct_train_1001_image-210.jpg"
     ds_array = sitk.ReadImage(dcm_image_path)  # 读取dicom文件的相关信息
     img_array = sitk.GetArrayFromImage(ds_array)  # 获取array
     # SimpleITK读取的图像数据的坐标顺序为zyx，即从多少张切片到单张切片的宽和高，此处我们读取单张，因此img_array的shape

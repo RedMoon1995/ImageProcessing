@@ -6,10 +6,12 @@ center = 40  # 窗位30-50
 width = 500  # 窗宽300-500
 
 #filename = 'G:\\project\\data\\CTdata\\E0001270V3_original.nii.gz'
-filename = 'G:\\project\\data\\ct_train\\ct_train_1001_image.nii.gz'
+#filename = 'G:\\project\\data\\ct_train\\ct_train_1001_image.nii.gz'
+filename = "G:\\project\\data\\crop_CTdata\\1270_denoise.nii.gz"
 
 img_sitk = sitk.ReadImage(filename)
 img = sitk.GetArrayFromImage(img_sitk)
+
 img_spacing = img_sitk.GetSpacing()
 img_origin = img_sitk.GetOrigin()
 img_direction = img_sitk.GetDirection()
@@ -40,7 +42,7 @@ img[img>max] = max
 #             data[i,j,k] = value 
 #进行保存
 print("-----------------")
-filesname = "G:\\project\\tool_code\\dcm\\train1001_transfer40_500.nii.gz"
+filesname = "G:\\project\\data\\crop_CTdata\\1270_denoise_transfer40_500.nii.gz"
 print(img.shape)        
 img = sitk.GetImageFromArray(img)
 img.SetDirection(img_direction)
