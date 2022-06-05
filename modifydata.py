@@ -3,8 +3,8 @@ from glob import glob
 import numpy as np
 import os
 
-testdata_dir = 'G:\\pred_data'
-labeling_dir = 'G:\\result'
+testdata_dir = 'G:\\result\\pred_data5_320000a'
+labeling_dir = 'G:\\result\\pred_data5_320000b'
 
 test_list = glob('{}/*.nii.gz'.format(testdata_dir))
 print(test_list)
@@ -20,14 +20,10 @@ for k in range(0, len(test_list)):
 
     #modify
     composed_label = np.zeros(vol_data.shape, dtype='int16')
-    composed_label[vol_data == 1] = 550
+    composed_label[vol_data == 1] = 600
     composed_label = composed_label.astype('int16')
 
     #save
-    if sort > 22:
-        sort += 1
-    if sort > 36:
-        sort += 1
     labeling_path = os.path.join(labeling_dir, ('ct_test_' + str(2000 + sort) + '_label.nii.gz'))
     labeling_vol = nib.Nifti1Image(composed_label, ref_affine)
     nib.save(labeling_vol, labeling_path)
