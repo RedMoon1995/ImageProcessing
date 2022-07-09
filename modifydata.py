@@ -3,8 +3,8 @@ from glob import glob
 import numpy as np
 import os
 
-testdata_dir = 'G:\\result\\pred_data5_320000a'
-labeling_dir = 'G:\\result\\pred_data5_320000b'
+testdata_dir = 'D:\\result\\hybrid_AG_5RVBC\\pred_data_32w_a'
+labeling_dir = 'D:\\result\\hybrid_AG_5RVBC\\pred_data_32w_b'
 
 test_list = glob('{}/*.nii.gz'.format(testdata_dir))
 print(test_list)

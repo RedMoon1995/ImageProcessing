@@ -1,16 +1,43 @@
-import glob
+import os
 import pandas as pd
+import numpy as np
 
-paths=glob.glob(r'G:\\dice\\*.xlsx')  #获取test文件下所有的excel文件路径
 
-data1=pd.DataFrame(columns=[]) #先构建一个空的数据框
+def csv2mart(path):
+    data_read = pd.read_csv(path)
+    list = data_read.keys().tolist()
+    list_new = list[0].split()
+    return list_new
 
-for path in paths:   #遍历下
-    data=pd.read_excel(path)
-    data1=pd.concat([data1,data])
 
-print(data1)  #打印出来就大功告成啦，最后可以再输出
-data1.to_excel(r'G:\\dice.xls')  #输出
+if __name__ == '__main__':
+    path = 'D:\\result\\hybrid_AG_5RVBC\\dice_32w'
+    output_path = 'D:\\result\\hybrid_AG_5RVBC\\dice_32w\\dice.xlsx'
+    mask1num = []
+    for _, _, files in os.walk(path):
+        for file in files:
+            print(file)
+            data = csv2mart(os.path.join(path, file))
+            mask1num.append(data)
+    da = np.array(mask1num)
+    da1 = np.resize(da, (40, 10))
+    print(da1.shape)
+    pd.DataFrame(da1).to_excel(os.path.join(output_path), sheet_name='Sheet1')
+
+
+# import glob
+# import pandas as pd
+#
+# paths=glob.glob(r'D:\\result\\hybrid_AG_5RVBC\\dice_32w\\*.xlsx')  #获取test文件下所有的excel文件路径
+#
+# data1=pd.DataFrame(columns=[]) #先构建一个空的数据框
+#
+# for path in paths:   #遍历下
+#     data=pd.read_excel(path)
+#     data1=pd.concat([data1,data])
+#
+# print(data1)  #打印出来就大功告成啦，最后可以再输出
+# data1.to_excel(r'D:\\result\\hybrid_AG_5RVBC\\dice_32w\\dice_32w.xls')  #输出
 
 
 # import xlrd, xlwt
